@@ -1,35 +1,29 @@
-import { NavLink, Outlet } from "react-router";
+import { useAuthStatus } from "@/hooks/useAuth";
+import { Navigate, Outlet, useLocation } from "react-router";
+import LoadingIcon from "./LoadingIcon";
+import Navbar from "./Navbar";
 
 function ProtectedRouteLayout() {
+    const location = useLocation();
+
+    const { isLoading, isError } = useAuthStatus();
+
+    if (isLoading) {
+        return <LoadingIcon />;
+    }
+
+    if (isError) {
+        // redirect back to previous page after successful login
+        return <Navigate to='/signin' replace state={{ from: location }} />;
+    }
+
     return (
         <div>
-            <nav className='bg-[#32bc9c7b] px-4 py-3'>
-                <div
-                    className='flex items-center justify-between
-             max-w-7xl mx-auto'>
-                    {/* logo */}
-                    <NavLink to={"/home"} className='flex items-center'>
-                        <img
-                            src='/lock.png'
-                            alt='Logo'
-                            className='h-8 w-auto'
-                        />
-                        <span>Secure-Auth</span>
-                    </NavLink>
+            <Navbar />
 
-                    {/* nav items */}
-                    <ul className='flex gap-4 items-center'>
-                        <li>
-                            <NavLink to='/profile'>Profile</NavLink>
-                        </li>
-                        <li>
-                            <NavLink to='/users'>Users</NavLink>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-
-            <Outlet />
+            <main>
+                <Outlet />
+            </main>
         </div>
     );
 }

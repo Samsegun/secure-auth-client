@@ -18,6 +18,15 @@ export type SignInResponse = {
     };
 };
 
+export type SignOutResponse = {
+    success: boolean;
+    message: string;
+    details: {
+        tokensCleared: boolean;
+        oauthLoggedOut: boolean;
+    };
+};
+
 export type RefreshTokenResponse = {
     success: boolean;
     message: string;

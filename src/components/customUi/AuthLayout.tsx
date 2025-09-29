@@ -1,23 +1,24 @@
-// import { useAuth } from "@/hooks/useAuth";
-// import { LoaderCircle } from "lucide-react";
-import { Outlet } from "react-router";
+import { useAuthStatus } from "@/hooks/useAuth";
+import { Navigate, Outlet, useLocation } from "react-router";
+import LoadingIcon from "./LoadingIcon";
 
 function AuthRouteLayout() {
-    // const { isLoading, isAuthenticated } = useAuth();
+    const location = useLocation();
+    const { isLoading, isError } = useAuthStatus();
 
-    return <Outlet />;
+    if (isLoading) {
+        return <LoadingIcon />;
+    }
 
-    // if (isLoading) {
-    //     return (
-    //         <div className='flex justify-center items-center h-screen'>
-    //             <h2>
-    //                 <LoaderCircle size={48} className='animate-spin' />
-    //             </h2>
-    //         </div>
-    //     );
-    // }
+    if (!isError) {
+        return <Navigate to={"/"} replace state={{ from: location }} />;
+    }
 
-    // return isAuthenticated ? <Navigate to='/' replace /> : <Outlet />;
+    return (
+        <main>
+            <Outlet />
+        </main>
+    );
 }
 
 export default AuthRouteLayout;

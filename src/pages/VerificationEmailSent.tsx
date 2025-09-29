@@ -2,7 +2,7 @@ import PageHeader from "@/components/customUi/PageHeader";
 import PageWrapper from "@/components/customUi/PageWrapper";
 import { Check } from "lucide-react";
 
-function EmailSent() {
+function VerificationEmailSent() {
     return (
         <PageWrapper>
             <PageHeader>
@@ -22,4 +22,4 @@ function EmailSent() {
     );
 }
 
-export default EmailSent;
+export default VerificationEmailSent;

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 export const useProfile = () => {
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ["profile"],
-        queryFn: () => getUserProfile(),
+        queryFn: getUserProfile,
         refetchOnWindowFocus: false,
         // staleTime: 60 * 60 * 1000,
     });

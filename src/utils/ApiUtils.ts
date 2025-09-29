@@ -1,5 +1,6 @@
 import type {
     SignInResponse,
+    SignOutResponse,
     SignUpResponse,
     UserProfile,
 } from "./ApiRequestsTypes";
@@ -20,6 +21,11 @@ export const signinUser = (email: string, password: string) => {
     });
 };
 
+export const signoutUser = () => {
+    return axiosInstance.post<SignOutResponse>("/user/logout");
+};
+
+// user requests
 export const getUserProfile = () => {
     return axiosInstance.get<UserProfile>("/user/profile");
 };

@@ -5,7 +5,7 @@ import PageWrapper from "@/components/customUi/PageWrapper";
 import { useProfile } from "@/hooks/useUser";
 
 function Profile() {
-    const { data, isLoading, isError, error } = useProfile();
+    const { data: userProfile, isLoading, isError, error } = useProfile();
 
     if (isLoading) {
         return <LoadingIcon />;
@@ -15,13 +15,16 @@ function Profile() {
         return <ErrorIcon error={error} />;
     }
 
+    const user = userProfile?.data.data.user!;
+
     return (
         <PageWrapper>
-            <PageHeader>profile page</PageHeader>
+            <PageHeader>Profile page</PageHeader>
 
             <section className='mt-8'>
-                <p>{data?.data.data.user.email}</p>
-                <p>{data?.data.data.user.id}</p>
+                <p>{user.id}</p>
+                <p>{user.email}</p>
+                <p>{user.role}</p>
             </section>
         </PageWrapper>
     );

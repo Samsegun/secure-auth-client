@@ -14,11 +14,7 @@ function AuthRouteLayout() {
         return <Navigate to={"/"} replace state={{ from: location }} />;
     }
 
-    return (
-        <main>
-            <Outlet />
-        </main>
-    );
+    return <Outlet />;
 }
 
 export default AuthRouteLayout;

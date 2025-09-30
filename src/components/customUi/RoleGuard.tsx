@@ -1,5 +1,6 @@
 import { useAuthStatus } from "@/hooks/useAuth";
 import { Navigate, Outlet } from "react-router";
+import LoadingIcon from "./LoadingIcon";
 
 type AllowedRoles = "USER" | "MODERATOR" | "ADMIN" | "SUPER_ADMIN";
 
@@ -8,11 +9,12 @@ interface RoleGuardProps {
 }
 
 function RoleGuard({ allowedRoles }: RoleGuardProps) {
-    const { isLoading, user } = useAuthStatus();
+    const { isLoading, userRole } = useAuthStatus();
 
-    if (isLoading) return null;
+    // if (isLoading) return null;
+    if (isLoading) return <LoadingIcon />;
 
-    const hasRequiredRole = allowedRoles.includes(user?.role as AllowedRoles);
+    const hasRequiredRole = allowedRoles.includes(userRole as AllowedRoles);
 
     if (!hasRequiredRole) return <Navigate to='/unauthorized' replace />;
 

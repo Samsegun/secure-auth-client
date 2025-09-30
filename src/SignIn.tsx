@@ -13,14 +13,33 @@ import { z } from "zod";
 
 import PageWrapper from "@/components/customUi/PageWrapper";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+import { Link, useSearchParams } from "react-router";
 import FormWrapper from "./components/customUi/FormWrapper";
+import OAuthButtons from "./components/customUi/OAuthButtons";
 import PageHeader from "./components/customUi/PageHeader";
 import { useSignin } from "./hooks/useAuth";
 import { signinFormSchema } from "./utils/FormUtils";
 
 function Signin() {
+    const [searchParams, setSearchParams] = useSearchParams();
     const signinMutation = useSignin();
+
+    // this hanles oauth errors
+    useEffect(() => {
+        const error = searchParams.get("error");
+
+        if (error === "oauth_failed") {
+            toast.error(
+                "Google sign-in failed. Please try again or use email/password."
+            );
+
+            // clean up url by removing the error parameter
+            searchParams.delete("error");
+            setSearchParams(searchParams, { replace: true });
+        }
+    }, [searchParams, setSearchParams]);
 
     const form = useForm<z.infer<typeof signinFormSchema>>({
         resolver: zodResolver(signinFormSchema),
@@ -41,6 +60,8 @@ function Signin() {
             <PageHeader>Sign In</PageHeader>
 
             <FormWrapper>
+                <OAuthButtons />
+
                 <Form {...form}>
                     {signinMutation.isError && (
                         <p className='text-red-500 my-4 text-center capitalize'>

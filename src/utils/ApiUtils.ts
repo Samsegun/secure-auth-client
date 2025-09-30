@@ -1,4 +1,5 @@
 import type {
+    AuthStatusResponse,
     SignInResponse,
     SignOutResponse,
     SignUpResponse,
@@ -23,6 +24,14 @@ export const signinUser = (email: string, password: string) => {
 
 export const signoutUser = () => {
     return axiosInstance.post<SignOutResponse>("/user/logout");
+};
+
+export const checkAuthStatus = () => {
+    return axiosInstance.get<AuthStatusResponse>("/user/auth-status");
+};
+
+export const googleLogin = () => {
+    return axiosInstance.get("/auth/google");
 };
 
 // user requests

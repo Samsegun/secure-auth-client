@@ -15,6 +15,8 @@ import PageWrapper from "@/components/customUi/PageWrapper";
 import { Button } from "@/components/ui/button";
 import { useSignup } from "@/hooks/useAuth";
 import { Link } from "react-router";
+import FormWrapper from "./components/customUi/FormWrapper";
+import OAuthButtons from "./components/customUi/OAuthButtons";
 import PageHeader from "./components/customUi/PageHeader";
 import PasswordRequirements from "./components/customUi/PasswordRequirements";
 import { signupFormSchema } from "./utils/FormUtils";
@@ -40,7 +42,9 @@ function Signup() {
         <PageWrapper>
             <PageHeader>Create an account</PageHeader>
 
-            <section className='flex flex-col items-center justify-center mt-8 w-11/12 mx-auto'>
+            <FormWrapper>
+                <OAuthButtons />
+
                 <Form {...form}>
                     {signupMutation.isError && (
                         <p className='text-red-500 my-4 text-center capitalize'>
@@ -112,7 +116,7 @@ function Signup() {
                         </p>
                     </form>
                 </Form>
-            </section>
+            </FormWrapper>
         </PageWrapper>
     );
 }

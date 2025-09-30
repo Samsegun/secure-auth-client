@@ -36,3 +36,14 @@ export type UserProfile = {
     message: string;
     data: SignInResponse["data"];
 };
+
+export type AuthStatusResponse = {
+    success: boolean;
+    isAuthenticated: boolean;
+    authMethod: string;
+    user: {
+        userId: string;
+        role: string;
+        isVerified: boolean;
+    };
+};

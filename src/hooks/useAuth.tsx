@@ -1,5 +1,5 @@
 import {
-    getUserProfile,
+    checkAuthStatus,
     signinUser,
     signoutUser,
     signupUser,
@@ -13,33 +13,7 @@ type UserCredentials = {
     password: string;
 };
 
-export const AUTH_STATUS_QUERY_KEY = ["auth-status"] as const;
-
-// const checkAuthStatus = () => {
-//     const token = localStorage.getItem("authToken");
-
-//     if (!token) {
-//         throw new Error("You're not authenticated");
-//     }
-
-//     return token;
-// };
-
-// export const useAuth = () => {
-//     const {
-//         data: token,
-//         isLoading,
-//         isError,
-//     } = useQuery({
-//         queryKey: ["authUser"],
-//         queryFn: checkAuthStatus,
-//         refetchOnWindowFocus: false,
-//         staleTime: Infinity,
-//         retry: false,
-//     });
-
-//     return { token, isLoading, isAuthenticated: !isError && !!token };
-// };
+export const AUTH_STATUS_QUERY_KEY = ["authStatus"] as const;
 
 export const useSignup = () => {
     const navigate = useNavigate();
@@ -95,8 +69,9 @@ export const useAuthStatus = () => {
         isError,
     } = useQuery({
         queryKey: AUTH_STATUS_QUERY_KEY,
-        queryFn: getUserProfile,
+        queryFn: checkAuthStatus,
         retry: false,
+        refetchOnWindowFocus: false,
         staleTime: Infinity,
     });
 
@@ -114,16 +89,16 @@ export const useAuthStatus = () => {
         };
     }
 
-    const userRole = userProfile.data.data.user;
+    const userRole = userProfile.data.user.role;
 
     return {
-        user: userRole,
+        userRole,
         isLoading,
         isError,
-        isUser: userRole.role === "USER",
-        isModerator: userRole.role === "MODERATOR",
-        isAdmin: userRole.role === "ADMIN",
-        isSuperAdmin: userRole.role === "SUPER_ADMIN",
-        role: userRole.role,
+        isUser: userRole === "USER",
+        isModerator: userRole === "MODERATOR",
+        isAdmin: userRole === "ADMIN",
+        isSuperAdmin: userRole === "SUPER_ADMIN",
+        role: userRole,
     };
 };

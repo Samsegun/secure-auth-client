@@ -33,15 +33,14 @@ export const useSignup = () => {
 export const useSignin = () => {
     const queryClient = useQueryClient();
 
-    const navigate = useNavigate();
-
     return useMutation({
         mutationFn: ({ email, password }: UserCredentials) =>
             signinUser(email, password),
-        onSuccess: () => {
-            navigate("/");
-
-            queryClient.invalidateQueries({ queryKey: AUTH_STATUS_QUERY_KEY });
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: AUTH_STATUS_QUERY_KEY,
+                refetchType: "active",
+            });
         },
         onError: err => toast.error(err.message),
     });
@@ -49,14 +48,14 @@ export const useSignin = () => {
 
 export const useSignout = () => {
     const queryClient = useQueryClient();
-    const navigate = useNavigate();
 
     return useMutation({
         mutationFn: signoutUser,
-        onSuccess: () => {
-            navigate("/signin");
-
-            queryClient.invalidateQueries({ queryKey: AUTH_STATUS_QUERY_KEY });
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: AUTH_STATUS_QUERY_KEY,
+                refetchType: "active",
+            });
         },
         onError: err => toast.error(err.message),
     });
@@ -78,7 +77,7 @@ export const useAuthStatus = () => {
     // return early if data is not available yet
     if (!userProfile) {
         return {
-            user: null,
+            userRole: null,
             isLoading,
             isError,
             isUser: false,

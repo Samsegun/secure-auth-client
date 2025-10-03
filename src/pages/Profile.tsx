@@ -1,3 +1,4 @@
+import ErrorFallback from "@/components/customUi/ErrorFallback";
 import ErrorIcon from "@/components/customUi/ErrorIcon";
 import LoadingIcon from "@/components/customUi/LoadingIcon";
 import PageHeader from "@/components/customUi/PageHeader";
@@ -12,6 +13,19 @@ function Profile() {
     }
 
     if (isError) {
+        if ((error as any)?.response?.status >= 500) {
+            return (
+                <ErrorFallback
+                    error={
+                        new Error(
+                            "The server is currently unavailable. Please try again later."
+                        )
+                    }
+                    resetErrorBoundary={() => window.location.reload()}
+                />
+            );
+        }
+
         return <ErrorIcon error={error} />;
     }
 

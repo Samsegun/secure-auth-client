@@ -47,7 +47,7 @@ axiosInstance.interceptors.response.use(
         if (tokenExpired && !originalRequest._retry) {
             // if a refresh is already happening, queue this request and return a promise
             if (isRefreshing) {
-                return new Promise<AxiosResponse>((resolve, reject) => {
+                return new Promise<void>((resolve, reject) => {
                     failedQueue.push({ resolve, reject });
                 })
                     .then(() => axiosInstance(originalRequest)) // after refresh resolves, retry original request
@@ -72,14 +72,15 @@ axiosInstance.interceptors.response.use(
                 //  queued requests and redirect to login
                 isRefreshing = false;
                 processQueue(refreshError as Error);
-                window.location.href = "/signin";
+
+                // window.location.href = "/signin";
                 return Promise.reject(refreshError);
             }
         }
 
         // other errors are handled here
-        const errorMessage = error.response?.data?.message || error.message;
-        return Promise.reject(new Error(errorMessage));
+        // const errorMessage = error.response?.data?.message || error.message;
+        return Promise.reject(error);
     }
 );
 

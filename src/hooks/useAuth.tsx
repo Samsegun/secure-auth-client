@@ -66,6 +66,7 @@ export const useAuthStatus = () => {
         data: userProfile,
         isLoading,
         isError,
+        error,
     } = useQuery({
         queryKey: AUTH_STATUS_QUERY_KEY,
         queryFn: checkAuthStatus,
@@ -80,6 +81,7 @@ export const useAuthStatus = () => {
             userRole: null,
             isLoading,
             isError,
+            error,
             isUser: false,
             isModerator: false,
             isAdmin: false,
@@ -94,6 +96,7 @@ export const useAuthStatus = () => {
         userRole,
         isLoading,
         isError,
+        error,
         isUser: userRole === "USER",
         isModerator: userRole === "MODERATOR",
         isAdmin: userRole === "ADMIN",

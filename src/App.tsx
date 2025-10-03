@@ -52,7 +52,7 @@ function App() {
                         </Route>
                     </Route>
 
-                    {/* for no0n-authenticated users  */}
+                    {/* for non-authenticated users  */}
                     <Route element={<AuthRouteLayout />}>
                         <Route path='signin' element={<Signin />} />
                         <Route path='signup' element={<Signup />} />

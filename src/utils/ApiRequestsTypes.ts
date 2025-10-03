@@ -1,3 +1,5 @@
+export type User = { id: string; email: string; role: string };
+
 export type SignUpResponse = {
     success: boolean;
     message: string;
@@ -10,11 +12,7 @@ export type SignUpResponse = {
 export type SignInResponse = {
     success: boolean;
     data: {
-        user: {
-            id: string;
-            email: string;
-            role: string;
-        };
+        user: User;
     };
 };
 
@@ -45,5 +43,12 @@ export type AuthStatusResponse = {
         userId: string;
         role: string;
         isVerified: boolean;
+    };
+};
+
+export type GetUsersResponse = {
+    message: string;
+    data: {
+        users: User[];
     };
 };

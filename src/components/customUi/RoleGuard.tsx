@@ -11,7 +11,6 @@ interface RoleGuardProps {
 function RoleGuard({ allowedRoles }: RoleGuardProps) {
     const { isLoading, userRole } = useAuthStatus();
 
-    // if (isLoading) return null;
     if (isLoading) return <LoadingIcon />;
 
     const hasRequiredRole = allowedRoles.includes(userRole as AllowedRoles);

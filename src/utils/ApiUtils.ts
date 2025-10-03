@@ -1,5 +1,6 @@
 import type {
     AuthStatusResponse,
+    GetUsersResponse,
     SignInResponse,
     SignOutResponse,
     SignUpResponse,
@@ -41,5 +42,5 @@ export const getUserProfile = () => {
 
 // super user requests
 export const getUsers = () => {
-    return axiosInstance.get<SignInResponse>("/user/moderator/view-users");
+    return axiosInstance.get<GetUsersResponse>("/user/moderator/view-users");
 };

@@ -8,13 +8,20 @@ import RoleGuard from "./components/customUi/RoleGuard";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
+import Signin from "./pages/SignIn";
+import Signup from "./pages/SignUp";
 import Unauthorized from "./pages/Unauthorized";
 import VerificationEmailSent from "./pages/VerificationEmailSent";
 import ViewUsers from "./pages/ViewUsers";
-import Signin from "./SignIn";
-import Signup from "./SignUp";
+// import Signup from "./SignUp";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            throwOnError: (error: any) => error.response?.status >= 500,
+        },
+    },
+});
 
 function App() {
     return (

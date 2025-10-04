@@ -1,4 +1,3 @@
-import ErrorFallback from "@/components/customUi/ErrorFallback";
 import ErrorIcon from "@/components/customUi/ErrorIcon";
 import LoadingIcon from "@/components/customUi/LoadingIcon";
 import PageHeader from "@/components/customUi/PageHeader";
@@ -13,19 +12,6 @@ function Profile() {
     }
 
     if (isError) {
-        if ((error as any)?.response?.status >= 500) {
-            return (
-                <ErrorFallback
-                    error={
-                        new Error(
-                            "The server is currently unavailable. Please try again later."
-                        )
-                    }
-                    resetErrorBoundary={() => window.location.reload()}
-                />
-            );
-        }
-
         return <ErrorIcon error={error} />;
     }
 
@@ -35,10 +21,16 @@ function Profile() {
         <PageWrapper>
             <PageHeader>Profile page</PageHeader>
 
-            <section className='mt-8'>
-                <p>{user.id}</p>
-                <p>{user.email}</p>
-                <p>{user.role}</p>
+            <section className='mt-8 space-y-2'>
+                <p>
+                    <strong>ID:</strong> {user.id}
+                </p>
+                <p>
+                    <strong>EMAIL:</strong> {user.email}
+                </p>
+                <p>
+                    <strong>ROLE:</strong> {user.role}
+                </p>
             </section>
         </PageWrapper>
     );

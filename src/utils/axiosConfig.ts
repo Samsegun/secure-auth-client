@@ -21,6 +21,51 @@ const axiosInstance = axios.create({
     withCredentials: true,
 });
 
+// // --- START: SIMULATION INTERCEPTOR ---
+// // This interceptor will run BEFORE every request is sent.
+// axiosInstance.interceptors.request.use(
+//     config => {
+//         const urlParams = new URLSearchParams(window.location.search);
+//         const shouldSimulate = urlParams.get("simulateError") === "true";
+
+//         if (shouldSimulate) {
+//             const simulateFor = urlParams.get("simulateFor"); // e.g., "/user/profile"
+//             const simulateStatus = parseInt(
+//                 urlParams.get("simulateStatus") || "500",
+//                 10
+//             ); // Default to 500
+
+//             // If 'simulateFor' is specified, only intercept that specific route.
+//             // Otherwise, intercept all routes (original behavior).
+//             if (!simulateFor || config.url === simulateFor) {
+//                 console.warn(
+//                     `⚠️ SIMULATING ${simulateStatus} ERROR FOR ROUTE: ${config.url} ⚠️`
+//                 );
+
+//                 const fakeError = {
+//                     isAxiosError: true,
+//                     response: {
+//                         status: simulateStatus,
+//                         data: { message: `Simulated ${simulateStatus} Error` },
+//                     },
+//                     message: `Simulated ${simulateStatus} Error for ${config.url}`,
+//                 };
+
+//                 return Promise.reject(fakeError);
+//             }
+//         }
+
+//         // If not simulating, let the request proceed normally
+//         return config;
+//     },
+//     error => {
+//         // Handle any errors that might occur during request setup
+//         return Promise.reject(error);
+//     }
+// );
+// // --- END: SIMULATION INTERCEPTOR ---
+
+// -- This interceptor auto-refreshes access token when it expires
 let isRefreshing = false;
 let failedQueue: QueueItem[] = [];
 
@@ -73,7 +118,6 @@ axiosInstance.interceptors.response.use(
                 isRefreshing = false;
                 processQueue(refreshError as Error);
 
-                // window.location.href = "/signin";
                 return Promise.reject(refreshError);
             }
         }

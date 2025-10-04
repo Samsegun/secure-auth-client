@@ -9,7 +9,9 @@ function ViewUsers() {
 
     if (isLoading) return <LoadingIcon />;
 
-    if (isError) return <ErrorIcon error={error} />;
+    if (isError) {
+        return <ErrorIcon error={error} />;
+    }
 
     const users = listOfUsers?.data.data.users!;
 

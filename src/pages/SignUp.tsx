@@ -13,61 +13,45 @@ import { z } from "zod";
 
 import PageWrapper from "@/components/customUi/PageWrapper";
 import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
-import toast from "react-hot-toast";
-import { Link, useSearchParams } from "react-router";
-import FormWrapper from "./components/customUi/FormWrapper";
-import OAuthButtons from "./components/customUi/OAuthButtons";
-import PageHeader from "./components/customUi/PageHeader";
-import { useSignin } from "./hooks/useAuth";
-import { signinFormSchema } from "./utils/FormUtils";
+import { useSignup } from "@/hooks/useAuth";
+import { Link } from "react-router";
+import FormWrapper from "../components/customUi/FormWrapper";
+import OAuthButtons from "../components/customUi/OAuthButtons";
+import PageHeader from "../components/customUi/PageHeader";
+import PasswordRequirements from "../components/customUi/PasswordRequirements";
+import { signupFormSchema } from "../utils/FormUtils";
 
-function Signin() {
-    const [searchParams, setSearchParams] = useSearchParams();
-    const signinMutation = useSignin();
+function Signup() {
+    const signupMutation = useSignup();
 
-    // this hanles oauth errors
-    useEffect(() => {
-        const error = searchParams.get("error");
-
-        if (error === "oauth_failed") {
-            toast.error(
-                "Google sign-in failed. Please try again or use email/password."
-            );
-
-            // clean up url by removing the error parameter
-            searchParams.delete("error");
-            setSearchParams(searchParams, { replace: true });
-        }
-    }, [searchParams, setSearchParams]);
-
-    const form = useForm<z.infer<typeof signinFormSchema>>({
-        resolver: zodResolver(signinFormSchema),
+    const form = useForm<z.infer<typeof signupFormSchema>>({
+        resolver: zodResolver(signupFormSchema),
+        mode: "onChange",
         defaultValues: {
             email: "",
             password: "",
         },
     });
 
-    async function onSubmit(values: z.infer<typeof signinFormSchema>) {
+    async function onSubmit(values: z.infer<typeof signupFormSchema>) {
         const { email, password } = values;
 
-        signinMutation.mutate({ email, password });
+        signupMutation.mutate({ email, password });
     }
 
     return (
         <PageWrapper>
-            <PageHeader>Sign In</PageHeader>
+            <PageHeader>Create an account</PageHeader>
 
             <FormWrapper>
                 <OAuthButtons />
 
                 <Form {...form}>
-                    {signinMutation.isError && (
+                    {/* {signupMutation.isError && (
                         <p className='text-red-500 my-4 text-center capitalize'>
-                            {signinMutation.error.message}!
+                            {signupMutation.error.response.data.message}!
                         </p>
-                    )}
+                    )} */}
 
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
@@ -103,28 +87,32 @@ function Signin() {
                                             {...field}
                                         />
                                     </FormControl>
-
-                                    <FormMessage />
+                                    {form.formState.dirtyFields.password && (
+                                        <PasswordRequirements
+                                            password={field.value}
+                                        />
+                                    )}
+                                    {/* <FormMessage /> */}
                                 </FormItem>
                             )}
                         />
 
                         <Button
                             type='submit'
-                            disabled={signinMutation.isPending}
+                            disabled={signupMutation.isPending}
                             className='bg-[#32bc9c7b] cursor-pointer hover:bg-[#325149da] 
                             block w-full'>
-                            {signinMutation.isPending
-                                ? "Signing in..."
-                                : "Sign In"}
+                            {signupMutation.isPending
+                                ? "Creating acccount..."
+                                : "Create account"}
                         </Button>
 
                         <p className='flex flex-col items-center'>
-                            <span>Don't have an account?</span>
+                            <span>Already have an account?</span>
                             <Link
-                                to={"/signup"}
+                                to={"/signin"}
                                 className='text-[#32bc9c7b] underline font-bold'>
-                                Create new account
+                                Sign In
                             </Link>
                         </p>
                     </form>
@@ -134,4 +122,4 @@ function Signin() {
     );
 }
 
-export default Signin;
+export default Signup;

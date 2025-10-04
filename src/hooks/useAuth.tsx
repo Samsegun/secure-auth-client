@@ -26,7 +26,10 @@ export const useSignup = () => {
         onSuccess: () => {
             navigate("/email-sent");
         },
-        onError: err => toast.error(err.message),
+        onError: (err: any) => {
+            console.error(err.response.data.message);
+            toast.error(err.response.data.message);
+        },
     });
 };
 
@@ -42,7 +45,10 @@ export const useSignin = () => {
                 refetchType: "active",
             });
         },
-        onError: err => toast.error(err.message),
+        onError: (err: any) => {
+            console.error(err.response.data.message);
+            toast.error(err.response.data.message);
+        },
     });
 };
 

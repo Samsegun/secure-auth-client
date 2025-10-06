@@ -1,5 +1,7 @@
 import {
     checkAuthStatus,
+    forgotPassword,
+    resetPassword,
     signinUser,
     signoutUser,
     signupUser,
@@ -13,6 +15,12 @@ type UserCredentials = {
     password: string;
 };
 
+type ResetPasswordDetails = {
+    token: string;
+    password: string;
+    email: string;
+};
+
 export const AUTH_STATUS_QUERY_KEY = ["authStatus"] as const;
 
 export const useSignup = () => {
@@ -24,10 +32,9 @@ export const useSignup = () => {
         // on successful signup, an object is returned containing
         // {success, message, data }
         onSuccess: () => {
-            navigate("/email-sent");
+            navigate("/email-verification-sent");
         },
         onError: (err: any) => {
-            console.error(err.response.data.message);
             toast.error(err.response.data.message);
         },
     });
@@ -46,7 +53,6 @@ export const useSignin = () => {
             });
         },
         onError: (err: any) => {
-            console.error(err.response.data.message);
             toast.error(err.response.data.message);
         },
     });
@@ -62,6 +68,32 @@ export const useSignout = () => {
                 queryKey: AUTH_STATUS_QUERY_KEY,
                 refetchType: "active",
             });
+        },
+        onError: err => toast.error(err.message),
+    });
+};
+
+export const useForgotPassword = () => {
+    return useMutation({
+        mutationFn: ({ email }: Omit<UserCredentials, "password">) =>
+            forgotPassword(email),
+        onSuccess: response => {
+            toast.success(response.data.message);
+        },
+        onError: err => toast.error(err.message),
+    });
+};
+
+export const useResetPassword = () => {
+    const navigate = useNavigate();
+
+    return useMutation({
+        mutationFn: ({ token, password }: ResetPasswordDetails) =>
+            resetPassword(token, password),
+        onSuccess: (response, variables) => {
+            toast.success(response.data.message);
+
+            navigate(`/signin?email=${encodeURIComponent(variables.email)}`);
         },
         onError: err => toast.error(err.message),
     });

@@ -114,7 +114,7 @@ axiosInstance.interceptors.response.use(
                 return axiosInstance(originalRequest);
             } catch (refreshError) {
                 // at this point, refresh failed; so we notify
-                //  queued requests and redirect to login
+                //  queued requests
                 isRefreshing = false;
                 processQueue(refreshError as Error);
 

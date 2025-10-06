@@ -41,10 +41,11 @@ function Signin() {
         }
     }, [searchParams, setSearchParams]);
 
+    const emailFromParams = searchParams.get("email");
     const form = useForm<z.infer<typeof signinFormSchema>>({
         resolver: zodResolver(signinFormSchema),
         defaultValues: {
-            email: "",
+            email: emailFromParams || "",
             password: "",
         },
     });
@@ -119,7 +120,15 @@ function Signin() {
                                 : "Sign In"}
                         </Button>
 
-                        <p className='flex flex-col items-center'>
+                        <p className='text-center'>
+                            <Link
+                                to={"/forgot-password"}
+                                className='text-[#32bc9c7b] underline font-bold'>
+                                Forgot Password?
+                            </Link>
+                        </p>
+
+                        <p className='flex flex-col items-center -mt-2'>
                             <span>Don't have an account?</span>
                             <Link
                                 to={"/signup"}

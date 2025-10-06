@@ -5,8 +5,10 @@ import "./App.css";
 import AuthRouteLayout from "./components/customUi/AuthLayout";
 import ProtectedRouteLayout from "./components/customUi/ProtectedRouteLayout";
 import RoleGuard from "./components/customUi/RoleGuard";
+import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
+import ResetPassword from "./pages/ResetPassword";
 import Settings from "./pages/Settings";
 import Signin from "./pages/SignIn";
 import Signup from "./pages/SignUp";
@@ -63,6 +65,18 @@ function App() {
                     <Route element={<AuthRouteLayout />}>
                         <Route path='signin' element={<Signin />} />
                         <Route path='signup' element={<Signup />} />
+                        <Route
+                            path='forgot-password'
+                            element={<ForgotPassword />}
+                        />
+                        <Route
+                            path='reset-password'
+                            element={<ResetPassword />}
+                        />
+                        {/* <Route
+                            path='verify-email'
+                            element={<VerifyEmail />}
+                        /> */}
                         <Route
                             path='email-verification-sent'
                             element={<VerificationEmailSent />}

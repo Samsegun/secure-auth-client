@@ -1,6 +1,8 @@
 import type {
     AuthStatusResponse,
+    ForgotPasswordResponse,
     GetUsersResponse,
+    ResetPasswordResponse,
     SignInResponse,
     SignOutResponse,
     SignUpResponse,
@@ -25,6 +27,18 @@ export const signinUser = (email: string, password: string) => {
 
 export const signoutUser = () => {
     return axiosInstance.post<SignOutResponse>("/user/logout");
+};
+
+export const forgotPassword = (email: string) => {
+    return axiosInstance.post<ForgotPasswordResponse>("/auth/forgot-password", {
+        email,
+    });
+};
+export const resetPassword = (token: string, password: string) => {
+    return axiosInstance.post<ResetPasswordResponse>("/auth/reset-password", {
+        token,
+        password,
+    });
 };
 
 export const checkAuthStatus = () => {

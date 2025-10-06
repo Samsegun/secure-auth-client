@@ -17,5 +17,11 @@ export const signupFormSchema = z.object({
 
 export const signinFormSchema = z.object({
     email: z.email("Invalid email format"),
-    password: z.string("Password is required").nonempty("Password is required"),
+    password: z.string().nonempty("Password is required"),
+});
+
+export const forgotPasswordSchema = signinFormSchema.omit({ password: true });
+
+export const resetPasswordSchema = z.object({
+    password: signupFormSchema.shape.password,
 });

@@ -29,10 +29,8 @@ export type ForgotPasswordResponse = Omit<SignOutResponse, "details">;
 
 export type ResetPasswordResponse = Omit<SignOutResponse, "details">;
 
-// export type RefreshTokenResponse = {
-//     success: boolean;
-//     message: string;
-// };
+export type VerifyEmailResponse = Omit<SignOutResponse, "details">;
+
 export type RefreshTokenResponse = Omit<SignOutResponse, "details">;
 
 export type UserProfile = {

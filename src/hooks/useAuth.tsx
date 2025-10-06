@@ -5,6 +5,7 @@ import {
     signinUser,
     signoutUser,
     signupUser,
+    verifyEmail,
 } from "@/utils/ApiUtils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -67,6 +68,22 @@ export const useSignout = () => {
             await queryClient.invalidateQueries({
                 queryKey: AUTH_STATUS_QUERY_KEY,
                 refetchType: "active",
+            });
+        },
+        onError: err => toast.error(err.message),
+    });
+};
+
+export const useVerifyEmail = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({ token }: { token: string }) => verifyEmail(token),
+        onSuccess: async response => {
+            toast.success(response.data.message);
+
+            await queryClient.invalidateQueries({
+                queryKey: AUTH_STATUS_QUERY_KEY,
             });
         },
         onError: err => toast.error(err.message),

@@ -13,10 +13,10 @@ function VerificationEmailSent() {
             </PageHeader>
 
             <section className='mt-8 flex justify-center items-center text-xl text-center h-[50vh]'>
-                <h1>
+                <h2>
                     A verification mail has been sent. Please check your email
                     or spam box.
-                </h1>
+                </h2>
             </section>
         </PageWrapper>
     );

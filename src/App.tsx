@@ -14,6 +14,7 @@ import Signin from "./pages/SignIn";
 import Signup from "./pages/SignUp";
 import Unauthorized from "./pages/Unauthorized";
 import VerificationEmailSent from "./pages/VerificationEmailSent";
+import VerifyEmail from "./pages/VerifyEmail";
 import ViewUsers from "./pages/ViewUsers";
 // import Signup from "./SignUp";
 
@@ -73,10 +74,7 @@ function App() {
                             path='reset-password'
                             element={<ResetPassword />}
                         />
-                        {/* <Route
-                            path='verify-email'
-                            element={<VerifyEmail />}
-                        /> */}
+                        <Route path='verify-email' element={<VerifyEmail />} />
                         <Route
                             path='email-verification-sent'
                             element={<VerificationEmailSent />}

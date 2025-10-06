@@ -7,6 +7,7 @@ import type {
     SignOutResponse,
     SignUpResponse,
     UserProfile,
+    VerifyEmailResponse,
 } from "./ApiRequestsTypes";
 import { axiosInstance } from "./axiosConfig";
 
@@ -34,11 +35,18 @@ export const forgotPassword = (email: string) => {
         email,
     });
 };
+
 export const resetPassword = (token: string, password: string) => {
     return axiosInstance.post<ResetPasswordResponse>("/auth/reset-password", {
         token,
         password,
     });
+};
+
+export const verifyEmail = (token: string) => {
+    return axiosInstance.get<VerifyEmailResponse>(
+        `/auth/verify-email?token=${token}`
+    );
 };
 
 export const checkAuthStatus = () => {

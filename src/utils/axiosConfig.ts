@@ -118,6 +118,28 @@ axiosInstance.interceptors.response.use(
                 isRefreshing = false;
                 processQueue(refreshError as Error);
 
+                // --- HANDLE INVALID REFRESH TOKEN ---
+                // check if the refresh token itself is invalid (expired or revoked)
+                const isInvalidRefreshToken =
+                    isAxiosError(refreshError) &&
+                    refreshError.response?.status === 401;
+
+                if (isInvalidRefreshToken) {
+                    console.error(
+                        "Refresh token is invalid or expired. Forcing logout."
+                    );
+
+                    // The session is unrecoverable. Redirect to sign-in
+                    // a hard redirect is best to clear all application state
+                    window.location.href = "/signin";
+
+                    // return a promise that never resolves to prevent the original
+                    // failed request from continuing its error handling
+                    return new Promise(() => {});
+                }
+
+                // for other refresh errors (like a 5xx server error),
+                // reject the promise so the global ErrorBoundary can catch it.
                 return Promise.reject(refreshError);
             }
         }

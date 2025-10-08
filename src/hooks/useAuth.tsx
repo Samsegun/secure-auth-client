@@ -61,14 +61,23 @@ export const useSignin = () => {
 
 export const useSignout = () => {
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
     return useMutation({
         mutationFn: signoutUser,
         onSuccess: async () => {
-            await queryClient.invalidateQueries({
-                queryKey: AUTH_STATUS_QUERY_KEY,
-                refetchType: "active",
-            });
+            /**  inavlidating or clearing cache is 
+             a trade-off between keeping user's data
+             or not i.e. efficiency/performance or security/privacy. 
+             choose what works best for the app. */
+
+            // await queryClient.invalidateQueries({
+            //     queryKey: AUTH_STATUS_QUERY_KEY,
+            //     refetchType: "active",
+            // });
+
+            queryClient.clear();
+            navigate("/signin");
         },
         onError: err => toast.error(err.message),
     });

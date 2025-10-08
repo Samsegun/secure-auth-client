@@ -4,14 +4,16 @@ import LoadingIcon from "./LoadingIcon";
 
 function AuthRouteLayout() {
     const location = useLocation();
-    const { isLoading, isError } = useAuthStatus();
+    const { isLoading, isError, userRole } = useAuthStatus();
+
+    const from = location.state?.from?.pathname || "/";
 
     if (isLoading) {
         return <LoadingIcon />;
     }
 
-    if (!isError) {
-        return <Navigate to={"/"} replace state={{ from: location }} />;
+    if (!isError && userRole) {
+        return <Navigate to={from} replace />;
     }
 
     return <Outlet />;
